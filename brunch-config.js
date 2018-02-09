@@ -9,10 +9,6 @@ module.exports.paths = {
     public: 'lib'
 }
 
-module.exports.npm = {
-    enabled: false
-}
-
 module.exports.modules = {
     nameCleaner: path => path.replace(/^src\//, '')
 }

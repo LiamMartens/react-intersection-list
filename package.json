@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "intersection-observer": "^0.5.0",
+    "intersection-observer-polyfill": "git+https://github.com/LiamMartens/intersection-observer-polyfill.git",
     "prop-types": "^15.6.0",
     "react": "^16.0.0"
   },

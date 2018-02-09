@@ -1,4 +1,4 @@
-import 'intersection-observer';
+import IntersectionObserver from 'intersection-observer-polyfill';
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -9,7 +9,7 @@ export default class IntersectionList extends React.Component {
         this.handleIntersectionObserve = this.handleIntersectionObserve.bind(this);
         this.handleDoObserve = this.handleDoObserve.bind(this);
         this.observer = new IntersectionObserver(this.handleIntersectionObserve, {
-            threshold: 0
+            threshold: 0.01
         });
 
         this.state = {
@@ -21,15 +21,26 @@ export default class IntersectionList extends React.Component {
         this.observer.disconnect();
     }
 
+    componentWillReceiveProps(nextProps) {
+        const { observedUntil } = this.state;
+        const { maxRenderCount } = nextProps;
+        if(maxRenderCount < observedUntil) {
+            this.setState({
+                observedUntil: maxRenderCount
+            });
+        }
+    }
+
     handleIntersectionObserve(entries, observer) {
+        const { overRender } = this.props;
         let { observedUntil } = this.state;
         let nextObservedUntil = observedUntil;
         entries.forEach(e => {
             const index = e.target.index;
-            if(observedUntil >= index) {
+            if(observedUntil >= index + overRender) {
                 this.observer.unobserve(e.target);
             }
-            if(e.isIntersecting && index > observedUntil) {
+            if((e.isIntersecting || e.intersectionRatio > 0.01) && index > observedUntil) {
                 nextObservedUntil = index;
             }
         });
@@ -52,6 +63,7 @@ export default class IntersectionList extends React.Component {
 
     render() {
         const {
+            overRender,
             rowHeight,
             maxRenderCount,
             fillerTagName,
@@ -61,11 +73,11 @@ export default class IntersectionList extends React.Component {
         const { observedUntil } = this.state;
 
         /* slice out the children to render */
-        const renderChildren = children.slice(0, maxRenderCount).slice(0, observedUntil);
+        const renderChildren = children.slice(0, observedUntil + overRender).slice(0, maxRenderCount);
 
         /* create filler rows */
         const FillTag = fillerTagName;
-        const fillChildren = [...Array(maxRenderCount - observedUntil - 1)].map((val, index) => (
+        const fillChildren = [...Array(Math.max(0, maxRenderCount - observedUntil - overRender))].map((val, index) => (
             <FillTag
                 ref={fillChild => this.handleDoObserve(fillChild, index + renderChildren.length)}
                 key={index + renderChildren.length}
@@ -83,6 +95,8 @@ export default class IntersectionList extends React.Component {
 IntersectionList.propTypes = {
     /* @var The height of each row, necessary for height prefill */
     rowHeight: PropTypes.number.isRequired,
+    /* @var Number of rows to overrender */
+    overRender: PropTypes.number,
     /* @var The maximum amount of children to render */
     maxRenderCount: PropTypes.number,
     /* @var The tagName to use for the filer list item */
@@ -92,6 +106,7 @@ IntersectionList.propTypes = {
 };
 
 IntersectionList.defaultProps = {
+    overRender: 0,
     maxRenderCount: 5,
     fillerTagName: 'div'
 };
