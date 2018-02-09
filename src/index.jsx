@@ -1,4 +1,4 @@
-import IntersectionObserver from 'intersection-observer-polyfill';
+import 'intersection-observer';
 import React from 'react';
 import PropTypes from 'prop-types';
 
