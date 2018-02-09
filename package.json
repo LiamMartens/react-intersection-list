@@ -2,14 +2,15 @@
   "name": "react-intersection-list",
   "version": "0.0.2",
   "description": "Render on intersection",
-  "main": "lib/react-intersection-list.js",
+  "main": "lib/index.js",
   "keywords": [
     "react",
     "intersection observer",
     "intersection"
   ],
   "scripts": {
-    "build": "brunch build -p"
+    "build": "brunch build -p",
+    "lib": "babel src/ --out-dir lib/"
   },
   "author": "",
   "license": "ISC",
@@ -20,8 +21,12 @@
   },
   "devDependencies": {
     "babel-brunch": "^6.1.1",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "brunch": "^2.10.12"
   }

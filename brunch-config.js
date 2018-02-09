@@ -1,12 +1,16 @@
 module.exports.files = {
     javascripts: {
-        joinTo: 'react-intersection-list.js'
+        joinTo: 'index.js'
     }
 }
 
 module.exports.paths = {
     watched: ['src'],
     public: 'lib'
+}
+
+module.exports.npm = {
+    enabled: false
 }
 
 module.exports.modules = {
