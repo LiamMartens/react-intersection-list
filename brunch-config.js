@@ -5,7 +5,8 @@ module.exports.files = {
 }
 
 module.exports.paths = {
-    watched: ['src']
+    watched: ['src'],
+    public: 'lib'
 }
 
 module.exports.modules = {

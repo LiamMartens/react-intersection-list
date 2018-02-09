@@ -1,8 +1,8 @@
 {
   "name": "react-intersection-list",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Render on intersection",
-  "main": "index.js",
+  "main": "lib/react-intersection-list.js",
   "keywords": [
     "react",
     "intersection observer",
